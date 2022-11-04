@@ -23,19 +23,14 @@ class App extends Component {
   // Global states
   state = {
     images: [],
-  };
-
-  getImageByName = async (imageName, page) => {
-    const pixabay = new Pixabay();
-    console.log(pixabay);
-    const images = await pixabay.fetchImageByName(imageName, page);
-    console.log(images);
-    this.setState({ images: images });
+    hits: 0,
+    numPages: 0,
   };
 
   componentDidMount() {
     try {
-      this.getImageByName('car',10);
+      this.pixabay = new Pixabay();
+      this.getImages();
     } catch (error) {
       console.log(error);
     }
@@ -51,12 +46,20 @@ class App extends Component {
     }
   }
 
+  getImages = async (imageName, page) => {
+    await this.pixabay.fetchImagesByName(imageName, page);
+    this.setState({
+      images: this.pixabay.images,
+      hits: this.pixabay.hits,
+      numPages: this.pixabay.numPages,
+    });
+  };
+
   render() {
     return (
       <Container>
-        {/* <Section title="Image gallery"></Section> */}
-        <Searchbar />
-        <ImageGallery />
+        <Searchbar handleGetImages={this.getImages} />
+        <ImageGallery images={this.state.images} />
       </Container>
     );
   }

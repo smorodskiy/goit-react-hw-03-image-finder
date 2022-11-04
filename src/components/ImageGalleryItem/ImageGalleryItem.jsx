@@ -7,9 +7,11 @@ import { Image, ImageItem } from './ImageGalleryItem.styled';
 
 class ImageGalleryItem extends Component {
   render() {
+    const { largeImageURL, webformatURL, tags } = this.props;
+    
     return (
-      <ImageItem class="gallery-item">
-        <Image src="" alt="" />
+      <ImageItem>
+        <Image src={webformatURL} alt={tags} />
       </ImageItem>
     );
   }

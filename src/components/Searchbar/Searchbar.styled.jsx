@@ -1,64 +1,78 @@
 // For stylish components
 import styled from 'styled-components';
 
-// Contact list
-export const ContactList = styled.ul`
+export const SearchHeader = styled.header`
+  top: 0;
+  left: 0;
+  position: sticky;
+  z-index: 1100;
   display: flex;
-  gap: 10px;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 64px;
+  padding-right: 24px;
+  padding-left: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color: #fff;
+  background-color: #3f51b5;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-// Contact info
-export const ContactInfo = styled.li`
+export const SearchForm = styled.form`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  border-radius: 10px;
-  box-shadow: 0 5px 7px -1px rgba(51, 51, 51, 0.23);
+  width: 100%;
+  max-width: 600px;
   background-color: #fff;
-  padding: 10px 30px 10px 30px;
+  border-radius: 3px;
+  overflow: hidden;
 `;
 
-// Contact
-export const Contact = styled.p`
-  /* color: #35d8ac; */
-  font-size: 18px;
-  font-weight: 600;
-`;
-
-// Button
-export const DeleteButton = styled.button`
-  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
-  border: 0;
-  border-radius: 12px;
-  color: #ffffff;
-  cursor: pointer;
+export const SearchButton = styled.button`
   display: inline-block;
-  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 2;
-  outline: transparent;
-  padding: 0 10px;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow 0.2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
+`;
+
+export const SearchButtonLabel = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
 
-  :not([disabled]):focus {
-    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5),
-      -0.125rem -0.125rem 1rem rgba(239, 71, 101, 0.5),
-      0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
+  :hover {
+    opacity: 1;
   }
+`;
 
-  :not([disabled]):hover {
-    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5),
-      -0.125rem -0.125rem 1rem rgba(239, 71, 101, 0.5),
-      0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
+export const SearchInput = styled.input`
+  display: inline-block;
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding-left: 4px;
+  padding-right: 4px;
+
+  ::placeholder {
+    font: inherit;
+    font-size: 18px;
   }
 `;

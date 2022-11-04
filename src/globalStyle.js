@@ -34,20 +34,21 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-      background-color: #f5f6fa;
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-      /* font-family: 'Jost', sans-serif; */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+      color: #212121;
+      background-color: #fff;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* code {
-      font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
-    } */
+    html {
+      box-sizing: border-box;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+
 `;
 
 export default GlobalStyle;

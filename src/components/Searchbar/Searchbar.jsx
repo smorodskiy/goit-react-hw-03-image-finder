@@ -12,20 +12,36 @@ import {
 } from './Searchbar.styled';
 
 class Searchbar extends Component {
+
+  state = {
+    inputValue: '',
+  }
+
+  handleOnInputChange = (e) => {
+    const inputValue = e.target.value;
+    this.setState({inputValue: inputValue})
+  };
+
+  handleSearchOnSubmit = (e) => {
+    e.preventDefault();
+    this.props.handleGetImages(this.state.inputValue);
+  }
+
   render() {
+    
     return (
-      <SearchHeader class="searchbar">
-        <SearchForm class="form">
-          <SearchButton type="submit" class="button">
-            <SearchButtonLabel class="button-label">Search</SearchButtonLabel>
+      <SearchHeader>
+        <SearchForm onSubmit={this.handleSearchOnSubmit}>
+          <SearchButton type="submit">
+            <SearchButtonLabel>Search</SearchButtonLabel>
           </SearchButton>
 
           <SearchInput
-            class="input"
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
+            onChange={this.handleOnInputChange}
           />
         </SearchForm>
       </SearchHeader>

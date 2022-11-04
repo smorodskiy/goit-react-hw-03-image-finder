@@ -1,6 +1,5 @@
 import React from 'react';
 import { Component } from 'react';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import {
   Button,
@@ -15,25 +14,28 @@ import {
 import { Container } from './App.styled';
 
 // Generator ids
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import { Pixabay } from 'components/http/fetchImages';
-
 
 class App extends Component {
   static defaultContacts = [];
 
   // Global states
-  state = {};
+  state = {
+    images: [],
+  };
 
-  getImageByName = async imageName => {
-console.log(Pixabay);
-    const images = await Pixabay.getImageByName(imageName);
-    return images
+  getImageByName = async (imageName, page) => {
+    const pixabay = new Pixabay();
+    console.log(pixabay);
+    const images = await pixabay.fetchImageByName(imageName, page);
+    console.log(images);
+    this.setState({ images: images });
   };
 
   componentDidMount() {
     try {
-      console.log(this.getImageByName('car'));
+      this.getImageByName('car',10);
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +44,7 @@ console.log(Pixabay);
   componentDidUpdate(prevProp, prevState) {
     if (prevState !== this.state) {
       try {
+        console.log(this.state);
       } catch (error) {
         console.log(error);
       }
@@ -49,10 +52,11 @@ console.log(Pixabay);
   }
 
   render() {
-    
     return (
       <Container>
-        <Section title="Phonebook"></Section>
+        {/* <Section title="Image gallery"></Section> */}
+        <Searchbar />
+        <ImageGallery />
       </Container>
     );
   }

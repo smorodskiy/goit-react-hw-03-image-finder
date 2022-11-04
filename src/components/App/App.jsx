@@ -6,6 +6,7 @@ import {
   ImageGallery,
   ImageGalleryItem,
   Loader,
+  LoadMoreButton,
   Modal,
   Searchbar,
   Section,
@@ -25,6 +26,7 @@ class App extends Component {
     images: [],
     hits: 0,
     numPages: 0,
+    searchValue: '',
   };
 
   componentDidMount() {
@@ -46,6 +48,11 @@ class App extends Component {
     }
   }
 
+  updateSearchValue = newValue => {
+    console.log(newValue);
+    this.setState({ searchValue: newValue });
+  };
+
   getImages = async (imageName, page) => {
     await this.pixabay.fetchImagesByName(imageName, page);
     this.setState({
@@ -56,10 +63,15 @@ class App extends Component {
   };
 
   render() {
+    const { numPages } = this.state;
     return (
       <Container>
-        <Searchbar handleGetImages={this.getImages} />
+        <Searchbar
+          handleGetImages={this.getImages}
+          handleUpdateSearchValue={this.updateSearchValue}
+        />
         <ImageGallery images={this.state.images} />
+        {numPages > 1 && <LoadMoreButton handleGetImages={this.getImages} />}
       </Container>
     );
   }

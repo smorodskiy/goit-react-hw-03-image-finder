@@ -14,20 +14,26 @@ const API_KEY = '29730166-90781f613c54edfa0d110c161';
 
 // Fetch images by name
 class Pixabay {
-  param = new URLSearchParams({
-    key: API_KEY,
-    q: '',
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    page: 1,
-    per_page: 12,
-  });
+  hits = 0;
+  images = [];
+  numPages = 0;
 
-  fetchImageByName = async (name, page) => {
-    this.param.q = name;
-    this.param.page = page;
-console.log(`${URL}?${this.param.toString()}`);
+  constructor() {
+    this.param = new URLSearchParams({
+      key: API_KEY,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+      per_page: 12,
+      q: '',
+      page: 1,
+    });
+  }
+
+  fetchImagesByName = async (name = '', page = 1) => {
+    this.param.set('q', name);
+    this.param.set('page', page);
+
     try {
       const response = await axios.get(`${URL}?${this.param.toString()}`);
 
@@ -40,9 +46,14 @@ console.log(`${URL}?${this.param.toString()}`);
       }
 
       // Get JSON of pictures
-      const images = response.data.hits;
+      this.images = response.data.hits;
 
-      return images;
+      // Number of images
+      this.hits = response.data.totalHits;
+
+      // Number of pages
+      this.numPages = Math.ceil(this.hits / this.param.get('per_page'));
+      
     } catch (error) {
       Notify.failure(error);
     }

@@ -1,4 +1,8 @@
 import axios from 'axios';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+const URL = 'https://pixabay.com/api/';
+const API_KEY = '29730166-90781f613c54edfa0d110c161';
 
 // key - твій унікальний ключ доступу до API.
 // q - термін для пошуку. Те, що буде вводити користувач.
@@ -10,24 +14,38 @@ import axios from 'axios';
 
 // Fetch images by name
 class Pixabay {
-  static URL = 'https://pixabay.com/api/';
-  static API_KEY = '29730166-90781f613c54edfa0d110c161';
-  static PER_PAGE = 12;
+  param = new URLSearchParams({
+    key: API_KEY,
+    q: '',
+    image_type: 'photo',
+    orientation: 'horizontal',
+    safesearch: true,
+    page: 1,
+    per_page: 12,
+  });
 
-  constructor() {}
+  fetchImageByName = async (name, page) => {
+    this.param.q = name;
+    this.param.page = page;
+console.log(`${URL}?${this.param.toString()}`);
+    try {
+      const response = await axios.get(`${URL}?${this.param.toString()}`);
 
-  static fetchImageByName = async (name, page) => {
-    const param = new URLSearchParams({
-      key: Pixabay.API_KEY,
-      q: name,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      safesearch: true,
-      page,
-      per_page: Pixabay.PER_PAGE,
-    });
+      if (response.status !== 200) {
+        Notify.failure(response.status);
+      }
 
-    return axios.get(`${Pixabay.URL}?${param.toString()}`);
+      if (response.data === undefined) {
+        Notify.failure('Incorrect data');
+      }
+
+      // Get JSON of pictures
+      const images = response.data.hits;
+
+      return images;
+    } catch (error) {
+      Notify.failure(error);
+    }
   };
 }
 

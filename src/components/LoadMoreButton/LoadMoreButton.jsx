@@ -6,14 +6,19 @@ import PropTypes from 'prop-types';
 import { Button } from './LoadMoreButton.styled';
 
 class LoadMoreButton extends Component {
+  handleOnClickButton = () => {};
+
   render() {
-    return(<Button>Load More</Button>)
+    // const {  } = this.state;
+    return (
+      <Button type="button" onClick={() => this.handleGetImages()}>
+        Load More
+      </Button>
+    );
   }
 }
 
 export { LoadMoreButton };
 
 // Types
-LoadMoreButton.propTypes = {
-
-};
+LoadMoreButton.propTypes = {};

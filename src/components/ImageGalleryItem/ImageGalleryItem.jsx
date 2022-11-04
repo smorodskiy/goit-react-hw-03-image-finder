@@ -3,22 +3,19 @@ import { Component } from 'react';
 
 // Check types of props
 import PropTypes from 'prop-types';
+import { Image, ImageItem } from './ImageGalleryItem.styled';
 
 class ImageGalleryItem extends Component {
   render() {
-    return(<></>)
+    return (
+      <ImageItem class="gallery-item">
+        <Image src="" alt="" />
+      </ImageItem>
+    );
   }
 }
 
 export { ImageGalleryItem };
 
 // Types
-ImageGalleryItem.propTypes = {
-  ImageGalleryItem: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ),
-  onDeleteUser: PropTypes.func.isRequired,
-};
+ImageGalleryItem.propTypes = {};

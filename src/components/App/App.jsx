@@ -1,6 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 
+// Pixabay API
+import { Pixabay } from 'utils/http/fetchImages';
+
 import {
   ImageGallery,
   Loader,
@@ -10,10 +13,6 @@ import {
 } from 'components';
 
 import { Container } from './App.styled';
-
-// Generator ids
-// import { nanoid } from 'nanoid';
-import { Pixabay } from 'utils/http/fetchImages';
 
 class App extends Component {
   static defaultContacts = [];
@@ -43,7 +42,6 @@ class App extends Component {
 
   // On update component
   componentDidUpdate(_, prevState) {
-    console.log(this.state);
     if (
       prevState.searchValue !== this.state.searchValue ||
       prevState.currentPage !== this.state.currentPage
@@ -59,12 +57,17 @@ class App extends Component {
 
   // Get image by name, http req
   getImages = async (imageName, page) => {
+    // Show loading spin
+    this.setState({ isLoading: true });
+
+    // Send req for images
     await this.pixabay.fetchImagesByName(imageName, page);
 
     this.setState({
       hits: this.pixabay.hits,
       numPages: this.pixabay.numPages,
       currentPage: this.pixabay.currentPage,
+      isLoading: false,
     });
 
     this.setState(prevState => {
@@ -81,8 +84,14 @@ class App extends Component {
 
   // On submit
   handleOnSubmit = searchValue => {
+    console.log(this.state);
     if (searchValue !== this.state.searchValue)
-      this.setState({ searchValue, images: [], currentPage: 1 });
+      this.setState({
+        searchValue,
+        images: [],
+        currentPage: 1,
+        numPages: 1,
+      });
   };
 
   // Toggle for modal image
@@ -99,10 +108,15 @@ class App extends Component {
     return (
       <Container>
         <Searchbar onSubmit={this.handleOnSubmit} />
+
+        {this.state.isLoading && <Loader />}
+
         <ImageGallery images={this.state.images} openModal={this.toogleModal} />
+
         {numPages > 1 && this.state.currentPage < numPages && (
           <LoadMoreButton handleNextPage={this.nextPage} />
         )}
+
         {this.state.isModalShow && (
           <Modal
             modalImg={this.state.modalImg}

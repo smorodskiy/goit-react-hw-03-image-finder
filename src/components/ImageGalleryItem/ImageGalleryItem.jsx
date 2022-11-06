@@ -6,11 +6,15 @@ import PropTypes from 'prop-types';
 import { Image, ImageItem } from './ImageGalleryItem.styled';
 
 class ImageGalleryItem extends Component {
+  handleOnClickImgItem = () => {
+    const { largeImageURL, openModal, tags } = this.props;
+    openModal(largeImageURL, tags);
+  };
+
   render() {
-    const { largeImageURL, webformatURL, tags } = this.props;
-    
+    const { webformatURL, tags } = this.props;
     return (
-      <ImageItem>
+      <ImageItem onClick={this.handleOnClickImgItem}>
         <Image src={webformatURL} alt={tags} />
       </ImageItem>
     );
@@ -20,4 +24,7 @@ class ImageGalleryItem extends Component {
 export { ImageGalleryItem };
 
 // Types
-ImageGalleryItem.propTypes = {};
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+};

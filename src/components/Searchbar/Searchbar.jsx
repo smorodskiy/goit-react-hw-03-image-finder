@@ -12,23 +12,24 @@ import {
 } from './Searchbar.styled';
 
 class Searchbar extends Component {
-
   state = {
-    inputValue: '',
-  }
-
-  handleOnInputChange = (e) => {
-    const inputValue = e.target.value;
-    this.setState({inputValue: inputValue})
+    searchValue: '',
   };
 
-  handleSearchOnSubmit = (e) => {
+  // On input change
+  handleOnInputChange = e => {
+    const inputValue = e.target.value;
+    this.setState({ searchValue: inputValue });
+  };
+
+  // Callback on submit form
+  handleSearchOnSubmit = e => {
     e.preventDefault();
-    this.props.handleGetImages(this.state.inputValue);
-  }
+    const { onSubmit } = this.props;
+    onSubmit(this.state.searchValue);
+  };
 
   render() {
-    
     return (
       <SearchHeader>
         <SearchForm onSubmit={this.handleSearchOnSubmit}>
@@ -52,4 +53,6 @@ class Searchbar extends Component {
 export { Searchbar };
 
 // Types
-Searchbar.propTypes = {};
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};

@@ -8,7 +8,7 @@ import { ImageGalleryItem } from 'components';
 
 class ImageGallery extends Component {
   render() {
-    const { images } = this.props;
+    const { images, openModal } = this.props;
 
     return (
       <ImageList>
@@ -20,6 +20,7 @@ class ImageGallery extends Component {
               largeImageURL={largeImageURL}
               webformatURL={webformatURL}
               tags={tags}
+              openModal={openModal}
             />
           );
         })}
@@ -31,4 +32,13 @@ class ImageGallery extends Component {
 export { ImageGallery };
 
 // Types
-ImageGallery.propTypes = {};
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
+};

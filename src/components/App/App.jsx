@@ -2,21 +2,18 @@ import React from 'react';
 import { Component } from 'react';
 
 import {
-  Button,
   ImageGallery,
-  ImageGalleryItem,
   Loader,
   LoadMoreButton,
   Modal,
   Searchbar,
-  Section,
 } from 'components';
 
 import { Container } from './App.styled';
 
 // Generator ids
 // import { nanoid } from 'nanoid';
-import { Pixabay } from 'components/http/fetchImages';
+import { Pixabay } from 'utils/http/fetchImages';
 
 class App extends Component {
   static defaultContacts = [];
@@ -26,9 +23,15 @@ class App extends Component {
     images: [],
     hits: 0,
     numPages: 0,
+    currentPage: 1,
     searchValue: '',
+    isLoading: false,
+    modalImg: '',
+    tags: '',
+    isModalShow: false,
   };
 
+  // On mount component
   componentDidMount() {
     try {
       this.pixabay = new Pixabay();
@@ -38,40 +41,75 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate(prevProp, prevState) {
-    if (prevState !== this.state) {
-      try {
-        console.log(this.state);
-      } catch (error) {
-        console.log(error);
-      }
+  // On update component
+  componentDidUpdate(_, prevState) {
+    console.log(this.state);
+    if (
+      prevState.searchValue !== this.state.searchValue ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      this.getImages(this.state.searchValue, this.state.currentPage);
     }
   }
 
+  // On update search value
   updateSearchValue = newValue => {
-    console.log(newValue);
     this.setState({ searchValue: newValue });
   };
 
+  // Get image by name, http req
   getImages = async (imageName, page) => {
     await this.pixabay.fetchImagesByName(imageName, page);
+
     this.setState({
-      images: this.pixabay.images,
       hits: this.pixabay.hits,
       numPages: this.pixabay.numPages,
+      currentPage: this.pixabay.currentPage,
     });
+
+    this.setState(prevState => {
+      return { images: [...prevState.images, ...this.pixabay.images] };
+    });
+  };
+
+  // Click on the next page
+  nextPage = () => {
+    this.setState(prevState => {
+      return { ...prevState, currentPage: prevState.currentPage + 1 };
+    });
+  };
+
+  // On submit
+  handleOnSubmit = searchValue => {
+    if (searchValue !== this.state.searchValue)
+      this.setState({ searchValue, images: [], currentPage: 1 });
+  };
+
+  // Toggle for modal image
+  toogleModal = (modalImg, tags) => {
+    if (!modalImg) {
+      this.setState({ modalImg: '', isModalShow: false, tags: '' });
+      return;
+    }
+    this.setState({ modalImg, isModalShow: true, tags });
   };
 
   render() {
     const { numPages } = this.state;
     return (
       <Container>
-        <Searchbar
-          handleGetImages={this.getImages}
-          handleUpdateSearchValue={this.updateSearchValue}
-        />
-        <ImageGallery images={this.state.images} />
-        {numPages > 1 && <LoadMoreButton handleGetImages={this.getImages} />}
+        <Searchbar onSubmit={this.handleOnSubmit} />
+        <ImageGallery images={this.state.images} openModal={this.toogleModal} />
+        {numPages > 1 && this.state.currentPage < numPages && (
+          <LoadMoreButton handleNextPage={this.nextPage} />
+        )}
+        {this.state.isModalShow && (
+          <Modal
+            modalImg={this.state.modalImg}
+            tags={this.state.tags}
+            closeModal={this.toogleModal}
+          />
+        )}
       </Container>
     );
   }

@@ -21,7 +21,7 @@ class Modal extends Component {
   };
 
   componentWillUnmount = () => {
-    window.removeEventListener(this.closeByEscape);
+    window.removeEventListener('keydown', this.closeByEscape);
   };
 
   handleOverlayClick = () => {
